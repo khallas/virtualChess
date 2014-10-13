@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 
 public class virtualChess {
 
+	public static final int boardsize = 8;
 	public enum Chessmen{
 		W_Ki,
 		W_Q,
@@ -24,7 +25,7 @@ public class virtualChess {
 		}
 	
 	public static boolean whiteTurn = true; //this is a public counter boolean to keep track of the turn
-	static Chessmen[][] chessboard_main = new Chessmen[8][8];
+	static Chessmen[][] chessboard_main = new Chessmen[boardsize][boardsize];
 
 	public static void main (String[] args) throws UnsupportedEncodingException {
 		chessboard_main = blankPopulate(chessboard_main);
@@ -37,8 +38,8 @@ public class virtualChess {
 		}
 	
 	public static Chessmen[][] blankPopulate(Chessmen[][] board){
-		for (int i = 0; i<8; i++){
-			for (int j = 0; j<8; j++){
+		for (int i = 0; i<board.length; i++){
+			for (int j = 0; j<board[i].length; j++){
 				board[i][j] = Chessmen.EMPTY;
 			}
 			}
@@ -46,10 +47,10 @@ public class virtualChess {
 		}
 	
 	public static void print(Chessmen[][] board) throws UnsupportedEncodingException{
-	for(int i = 7; i>=0; i--){
+	for(int i = board.length-1; i>=0; i--){
 		int row_num = i+1;
 		System.out.printf(row_num + "\t");
-		for(int j = 0; j<8; j++){
+		for(int j = 0; j<board[i].length; j++){
 			if (board[j][i] != Chessmen.EMPTY){
 				PrintStream out = new PrintStream(System.out, true, "UTF-8");
 				out.printf(printUnicode(board[j][i]) + "\t");
@@ -81,7 +82,7 @@ public class virtualChess {
 	board[6][7] = Chessmen.B_Kn;
 	board[7][7] = Chessmen.B_R;
 	
-	for(int i = 0; i<8;  i++){
+	for(int i = 0; i<boardsize;  i++){
 	board[i][1] = Chessmen.W_P;
 	board[i][6] = Chessmen.B_P;
 	}
@@ -134,8 +135,7 @@ public class virtualChess {
 		default : to_int[0] = 10;
 		}
 		
-		//I'm going to check if the initial square isn't empty
-		//This is where I am making the move
+		//This is where I am making the move after checking that it doesn't violate rules
 		if (rules(board, from_int, to_int)){
 			board[to_int[0]][to_int[1]] = board[from_int[0]][from_int[1]];
 			board[from_int[0]][from_int[1]] = Chessmen.EMPTY;
@@ -156,8 +156,8 @@ public class virtualChess {
 		 */
 		int whiteCounter = 0;
 		int blackCounter = 0;
-		for(int i = 0; i<8; i++){
-			for(int j = 0; j<8; j++)
+		for(int i = 0; i<board.length; i++){
+			for(int j = 0; j<board[i].length; j++)
 			{
 				if(board[i][j].equals(Chessmen.W_Ki)) 
 					whiteCounter++;
@@ -178,7 +178,7 @@ public class virtualChess {
 	
 	public static boolean rules (Chessmen[][] board, int[] from, int to[]){
 		
-		//Making groups of white and black pieces --
+		//Making lists of white and black pieces --
 		List<Chessmen> whitePieces = new ArrayList<Chessmen>();
 		whitePieces.add(Chessmen.W_Ki);
 		whitePieces.add(Chessmen.W_Q);
@@ -265,13 +265,75 @@ public class virtualChess {
 					return false;
 				}
 			}
-			
-				
-			
-			
-			
+	
 		}//end dealing with pawns
+		
+		
+		//Rule 5 ------------------------King Rules---------------------------
+		if ((board[from[0]][from[1]] == Chessmen.W_Ki)||(board[from[0]][from[1]] == Chessmen.B_Ki))
+		//above condition checks if we are making a move with a king
+		{
+			if(to[0]-from[0] > 1 || to[1]-from[1] > 1 || to[0]-from[0] < (-1) || to[1]-from[1] < (-1) )
+			//only allowing there to be a change of 1 in the x and y direction for the King. 
+			{
+				System.out.println("King Error!");
+				return false;
+			}
+		}
+		
+		//Rule 6 ------------------------Bishop Rules---------------------------
+		if ((board[from[0]][from[1]] == Chessmen.W_B)||(board[from[0]][from[1]] == Chessmen.B_B))
+		//above condition checks if we are making a move with a bishop
+		{		
+			int delta_x = to[0]-from[0];
+			int delta_y = to[1]-from[1];			
+			if(Math.abs(delta_x) != Math.abs(delta_y)){
+				System.out.println("Bishop Error!");
+				return false;
+			}
+		}
+		
+		//Rule 7 ------------------------Rook Rules---------------------------
+		if ((board[from[0]][from[1]] == Chessmen.W_R)||(board[from[0]][from[1]] == Chessmen.B_R))
+		//above condition checks if we are making a move with a rook
+		{		
+			int delta_x = to[0]-from[0];
+			int delta_y = to[1]-from[1];			
+			if(!(delta_x==0 || delta_y==0)){
+				System.out.println("Rook Error!");
+				return false;
+			}
+		}
 
+		//Rule 8 ------------------------Knight Rules---------------------------
+		if ((board[from[0]][from[1]] == Chessmen.W_Kn)||(board[from[0]][from[1]] == Chessmen.B_Kn))
+		//above condition checks if we are making a move with a knight
+		{		
+			int delta_x = Math.abs(to[0]-from[0]);
+			int delta_y = Math.abs(to[1]-from[1]);			
+			if(!((delta_x==2 && delta_y==1)||(delta_x==1 && delta_y==2))){
+				System.out.println("Knight Error!");
+				return false;
+			}
+		}
+		
+		//Rule 8 ------------------------Queen Rules---------------------------
+				if ((board[from[0]][from[1]] == Chessmen.W_Q)||(board[from[0]][from[1]] == Chessmen.B_Q))
+				//above condition checks if we are making a move with a queen
+				{		
+					int delta_x = Math.abs(to[0]-from[0]);
+					int delta_y = Math.abs(to[1]-from[1]);			
+					if(delta_x == 0 || delta_y==0)
+					{
+						if(!(delta_x==0 || delta_y==0)){
+							System.out.println("Queen Error!");
+							return false;
+						}}
+					else if(delta_x!=delta_y){
+						System.out.println("Queen Error!");
+						return false;
+					}
+				}
 
 		//Rule 4 - Check if there is something in the way of the move (except Knight)
 		//if ((board[from[0]][from[1]] != Chessmen.W_Kn)||(board[from[0]][from[1]] != Chessmen.B_Kn))
