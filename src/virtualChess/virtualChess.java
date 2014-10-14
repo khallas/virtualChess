@@ -5,27 +5,14 @@ import java.util.Scanner;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 
+import Pieces.*;
+
 public class virtualChess {
 
 	public static final int boardsize = 8;
-	public enum Chessmen{
-		W_Ki,
-		W_Q,
-		W_R,
-		W_B,
-		W_Kn,
-		W_P,
-		B_Ki,
-		B_Q,
-		B_R,
-		B_B,
-		B_Kn,
-		B_P,
-		EMPTY
-		}
-	
+
 	public static boolean whiteTurn = true; //this is a public counter boolean to keep track of the turn
-	static Chessmen[][] chessboard_main = new Chessmen[boardsize][boardsize];
+	static pieces.Chessmen[][] chessboard_main = new pieces.Chessmen[boardsize][boardsize];
 
 	public static void main (String[] args) throws UnsupportedEncodingException {
 		chessboard_main = blankPopulate(chessboard_main);
@@ -37,21 +24,21 @@ public class virtualChess {
 		}
 		}
 	
-	public static Chessmen[][] blankPopulate(Chessmen[][] board){
+	public static pieces.Chessmen[][] blankPopulate(pieces.Chessmen[][] board){
 		for (int i = 0; i<board.length; i++){
 			for (int j = 0; j<board[i].length; j++){
-				board[i][j] = Chessmen.EMPTY;
+				board[i][j] = pieces.Chessmen.EMPTY;
 			}
 			}
 		return board;
 		}
 	
-	public static void print(Chessmen[][] board) throws UnsupportedEncodingException{
+	public static void print(pieces.Chessmen[][] board) throws UnsupportedEncodingException{
 	for(int i = board.length-1; i>=0; i--){
 		int row_num = i+1;
 		System.out.printf(row_num + "\t");
 		for(int j = 0; j<board[i].length; j++){
-			if (board[j][i] != Chessmen.EMPTY){
+			if (board[j][i] != pieces.Chessmen.EMPTY){
 				PrintStream out = new PrintStream(System.out, true, "UTF-8");
 				out.printf(printUnicode(board[j][i]) + "\t");
 				//System.out.printf(board[j][i] + "\t");
@@ -63,34 +50,34 @@ public class virtualChess {
 	System.out.println("\t a\t b\t c\t d\t e\t f\t g\t h");
 	}
 	
-	public static Chessmen[][] initiateBoard(Chessmen[][] board){
-	board[0][0] = Chessmen.W_R;
-	board[1][0] = Chessmen.W_Kn;
-	board[2][0] = Chessmen.W_B;
-	board[3][0] = Chessmen.W_Q;
-	board[4][0] = Chessmen.W_Ki;
-	board[5][0] = Chessmen.W_B;
-	board[6][0] = Chessmen.W_Kn;
-	board[7][0] = Chessmen.W_R;
+	public static pieces.Chessmen[][] initiateBoard(pieces.Chessmen[][] board){
+	board[0][0] = pieces.Chessmen.W_R;
+	board[1][0] = pieces.Chessmen.W_Kn;
+	board[2][0] = pieces.Chessmen.W_B;
+	board[3][0] = pieces.Chessmen.W_Q;
+	board[4][0] = pieces.Chessmen.W_Ki;
+	board[5][0] = pieces.Chessmen.W_B;
+	board[6][0] = pieces.Chessmen.W_Kn;
+	board[7][0] = pieces.Chessmen.W_R;
 	
-	board[0][7] = Chessmen.B_R;
-	board[1][7] = Chessmen.B_Kn;
-	board[2][7] = Chessmen.B_B;
-	board[3][7] = Chessmen.B_Q;
-	board[4][7] = Chessmen.B_Ki;
-	board[5][7] = Chessmen.B_B;
-	board[6][7] = Chessmen.B_Kn;
-	board[7][7] = Chessmen.B_R;
+	board[0][7] = pieces.Chessmen.B_R;
+	board[1][7] = pieces.Chessmen.B_Kn;
+	board[2][7] = pieces.Chessmen.B_B;
+	board[3][7] = pieces.Chessmen.B_Q;
+	board[4][7] = pieces.Chessmen.B_Ki;
+	board[5][7] = pieces.Chessmen.B_B;
+	board[6][7] = pieces.Chessmen.B_Kn;
+	board[7][7] = pieces.Chessmen.B_R;
 	
 	for(int i = 0; i<boardsize;  i++){
-	board[i][1] = Chessmen.W_P;
-	board[i][6] = Chessmen.B_P;
+	board[i][1] = pieces.Chessmen.W_P;
+	board[i][6] = pieces.Chessmen.B_P;
 	}
 	
 	return board;
 	}
 	
-	public static Chessmen[][] move(Chessmen[][] board){
+	public static pieces.Chessmen[][] move(pieces.Chessmen[][] board){
 		//Stating whose turn it is - 
 		if (whiteTurn) System.out.println("White turn - ");
 		else System.out.println("Black turn - ");
@@ -138,7 +125,7 @@ public class virtualChess {
 		//This is where I am making the move after checking that it doesn't violate rules
 		if (rules(board, from_int, to_int)){
 			board[to_int[0]][to_int[1]] = board[from_int[0]][from_int[1]];
-			board[from_int[0]][from_int[1]] = Chessmen.EMPTY;
+			board[from_int[0]][from_int[1]] = pieces.Chessmen.EMPTY;
 			whiteTurn = !whiteTurn;
 			}		
 		
@@ -147,7 +134,7 @@ public class virtualChess {
 		return board;
 	}
 
-	public static boolean kingCheck(Chessmen[][] board) 
+	public static boolean kingCheck(pieces.Chessmen[][] board) 
 	{
 		/* This is a method which checks whether both kings are still on the board.
 		 * If that is the case, it returns true and lets the game go on. If not, 
@@ -159,9 +146,9 @@ public class virtualChess {
 		for(int i = 0; i<board.length; i++){
 			for(int j = 0; j<board[i].length; j++)
 			{
-				if(board[i][j].equals(Chessmen.W_Ki)) 
+				if(board[i][j].equals(pieces.Chessmen.W_Ki)) 
 					whiteCounter++;
-				if (board[i][j].equals(Chessmen.B_Ki))
+				if (board[i][j].equals(pieces.Chessmen.B_Ki))
 					blackCounter++;
 			}
 		}
@@ -176,23 +163,23 @@ public class virtualChess {
 		}		
 	}
 	
-	public static boolean rules (Chessmen[][] board, int[] from, int to[]){
+	public static boolean rules (pieces.Chessmen[][] board, int[] from, int to[]){
 		
 		//Making lists of white and black pieces --
-		List<Chessmen> whitePieces = new ArrayList<Chessmen>();
-		whitePieces.add(Chessmen.W_Ki);
-		whitePieces.add(Chessmen.W_Q);
-		whitePieces.add(Chessmen.W_R);
-		whitePieces.add(Chessmen.W_Kn);
-		whitePieces.add(Chessmen.W_B);
-		whitePieces.add(Chessmen.W_P);		
-		List<Chessmen> blackPieces = new ArrayList<Chessmen>();
-		blackPieces.add(Chessmen.B_Ki);
-		blackPieces.add(Chessmen.B_Q);
-		blackPieces.add(Chessmen.B_R);
-		blackPieces.add(Chessmen.B_Kn);
-		blackPieces.add(Chessmen.B_B);
-		blackPieces.add(Chessmen.B_P);
+		List<pieces.Chessmen> whitePieces = new ArrayList<pieces.Chessmen>();
+		whitePieces.add(pieces.Chessmen.W_Ki);
+		whitePieces.add(pieces.Chessmen.W_Q);
+		whitePieces.add(pieces.Chessmen.W_R);
+		whitePieces.add(pieces.Chessmen.W_Kn);
+		whitePieces.add(pieces.Chessmen.W_B);
+		whitePieces.add(pieces.Chessmen.W_P);		
+		List<pieces.Chessmen> blackPieces = new ArrayList<pieces.Chessmen>();
+		blackPieces.add(pieces.Chessmen.B_Ki);
+		blackPieces.add(pieces.Chessmen.B_Q);
+		blackPieces.add(pieces.Chessmen.B_R);
+		blackPieces.add(pieces.Chessmen.B_Kn);
+		blackPieces.add(pieces.Chessmen.B_B);
+		blackPieces.add(pieces.Chessmen.B_P);
 		// ended making groups
 		
 		//Rule 0 - the 'From' and 'To' are within bounds 
@@ -203,7 +190,7 @@ public class virtualChess {
 			
 		
 		// Rule 1 - Initial space can't be labeled empty
-		if (board[from[0]][from[1]] == Chessmen.EMPTY){
+		if (board[from[0]][from[1]] == pieces.Chessmen.EMPTY){
 			System.out.println("Intial square is empty!!");
 			return false;
 		}
@@ -222,23 +209,13 @@ public class virtualChess {
 			return false;
 		}
 			
-		//Rule 4 ------------------------------- PAWN RULES!!! ----------------------------------
-		/*Note - this is still work in progress. Currently the only rule is that pawns can move
-		 * forward by 1 space. 
-		 * There are rules yet to be included 
-		 * 1. Allow double move when first move - done! 
-		 * 2. Restrict move if there is something in front - might do this in a general way for all pieces
-		 * except knights.
-		 * 3. Allow killing diagonally one square if available - done!!
-		 * 4. Convert to another piece when reach the other side of the board - this is done properly in a method 
-		 * called pawnTransform.
-		 */
-		if ((board[from[0]][from[1]] == Chessmen.W_P)||(board[from[0]][from[1]] == Chessmen.B_P))
+		//Rule 5 ------------------------Pawn Rules---------------------------
+		if ((board[from[0]][from[1]] == pieces.Chessmen.W_P)||(board[from[0]][from[1]] == pieces.Chessmen.B_P))
 		//above condition is for checking if we are dealing with a pawn. 
 		{
 			if(to[0]-from[0] == 1 || from[0]-to[0]==1){
 				//if we are moving diagonally - 
-				if(board[to[0]][to[1]] == Chessmen.EMPTY){ 
+				if(board[to[0]][to[1]] == pieces.Chessmen.EMPTY){ 
 					//can only move if we make a kill 
 					return false;}
 			}				
@@ -270,7 +247,7 @@ public class virtualChess {
 		
 		
 		//Rule 5 ------------------------King Rules---------------------------
-		if ((board[from[0]][from[1]] == Chessmen.W_Ki)||(board[from[0]][from[1]] == Chessmen.B_Ki))
+		if ((board[from[0]][from[1]] == pieces.Chessmen.W_Ki)||(board[from[0]][from[1]] == pieces.Chessmen.B_Ki))
 		//above condition checks if we are making a move with a king
 		{
 			if(to[0]-from[0] > 1 || to[1]-from[1] > 1 || to[0]-from[0] < (-1) || to[1]-from[1] < (-1) )
@@ -282,31 +259,29 @@ public class virtualChess {
 		}
 		
 		//Rule 6 ------------------------Bishop Rules---------------------------
-		if ((board[from[0]][from[1]] == Chessmen.W_B)||(board[from[0]][from[1]] == Chessmen.B_B))
+		if ((board[from[0]][from[1]] == pieces.Chessmen.W_B)||(board[from[0]][from[1]] == pieces.Chessmen.B_B))
 		//above condition checks if we are making a move with a bishop
 		{		
-			int delta_x = to[0]-from[0];
-			int delta_y = to[1]-from[1];			
-			if(Math.abs(delta_x) != Math.abs(delta_y)){
-				System.out.println("Bishop Error!");
+			BishopMoves bishop = new BishopMoves(whiteTurn);
+			if (!(bishop.isMoveValid(from[0], from[1], to[0], to[1])))
+			{
 				return false;
 			}
 		}
 		
 		//Rule 7 ------------------------Rook Rules---------------------------
-		if ((board[from[0]][from[1]] == Chessmen.W_R)||(board[from[0]][from[1]] == Chessmen.B_R))
+		if ((board[from[0]][from[1]] == pieces.Chessmen.W_R)||(board[from[0]][from[1]] == pieces.Chessmen.B_R))
 		//above condition checks if we are making a move with a rook
-		{		
-			int delta_x = to[0]-from[0];
-			int delta_y = to[1]-from[1];			
-			if(!(delta_x==0 || delta_y==0)){
-				System.out.println("Rook Error!");
+		{	
+			RookMoves rook = new RookMoves(whiteTurn);
+			if (!(rook.isMoveValid(from[0], from[1], to[0], to[1])))
+			{
 				return false;
 			}
 		}
 
 		//Rule 8 ------------------------Knight Rules---------------------------
-		if ((board[from[0]][from[1]] == Chessmen.W_Kn)||(board[from[0]][from[1]] == Chessmen.B_Kn))
+		if ((board[from[0]][from[1]] == pieces.Chessmen.W_Kn)||(board[from[0]][from[1]] == pieces.Chessmen.B_Kn))
 		//above condition checks if we are making a move with a knight
 		{		
 			int delta_x = Math.abs(to[0]-from[0]);
@@ -318,7 +293,7 @@ public class virtualChess {
 		}
 		
 		//Rule 8 ------------------------Queen Rules---------------------------
-				if ((board[from[0]][from[1]] == Chessmen.W_Q)||(board[from[0]][from[1]] == Chessmen.B_Q))
+				if ((board[from[0]][from[1]] == pieces.Chessmen.W_Q)||(board[from[0]][from[1]] == pieces.Chessmen.B_Q))
 				//above condition checks if we are making a move with a queen
 				{		
 					int delta_x = Math.abs(to[0]-from[0]);
@@ -335,17 +310,15 @@ public class virtualChess {
 					}
 				}
 
-		//Rule 4 - Check if there is something in the way of the move (except Knight)
-		//if ((board[from[0]][from[1]] != Chessmen.W_Kn)||(board[from[0]][from[1]] != Chessmen.B_Kn))
+		//Rule 9 - Check if there is something in the way of the move (except Knight)
+		if ((board[from[0]][from[1]] != pieces.Chessmen.W_Kn)&&(board[from[0]][from[1]] != pieces.Chessmen.B_Kn)){
 			
-			
-			
-			
+		}	
 		
 		return true;
 	}
 	
-	public static String printUnicode(Chessmen piece){
+	public static String printUnicode(pieces.Chessmen piece){
 		String unicode = "";
 		switch(piece){
 		case W_Ki : unicode = "\u2654"; break;
@@ -366,8 +339,8 @@ public class virtualChess {
 		
 	}
 	
-	public static Chessmen[][] pawnTransform(Chessmen[][] board, int[] to, int[] from){
-		if (((board[from[0]][from[1]] == Chessmen.W_P)&&(to[1]==7))||((board[from[0]][from[1]] == Chessmen.B_P))&&(to[1]==0)){
+	public static pieces.Chessmen[][] pawnTransform(pieces.Chessmen[][] board, int[] to, int[] from){
+		if (((board[from[0]][from[1]] == pieces.Chessmen.W_P)&&(to[1]==7))||((board[from[0]][from[1]] == pieces.Chessmen.B_P))&&(to[1]==0)){
 				//If we reach end of board, call a method which changes to another piece.
 				System.out.println("Which piece do you want to convert to? Enter serial number - \n "
 				+ "1. Queen \n"
@@ -382,19 +355,19 @@ public class virtualChess {
 				
 				if(whiteTurn){
 				switch (option){
-				case 1 : board[to[0]][to[1]] = Chessmen.W_Q;
-				case 2 : board[to[0]][to[1]] = Chessmen.W_Kn;
-				case 3 : board[to[0]][to[1]] = Chessmen.W_R;
-				case 4 : board[to[0]][to[1]] = Chessmen.W_B;
-				case 5 : board[to[0]][to[1]] = Chessmen.W_P;
+				case 1 : board[to[0]][to[1]] = pieces.Chessmen.W_Q;
+				case 2 : board[to[0]][to[1]] = pieces.Chessmen.W_Kn;
+				case 3 : board[to[0]][to[1]] = pieces.Chessmen.W_R;
+				case 4 : board[to[0]][to[1]] = pieces.Chessmen.W_B;
+				case 5 : board[to[0]][to[1]] = pieces.Chessmen.W_P;
 				}}
 				else{
 					switch (option){
-					case 1 : board[to[0]][to[1]] = Chessmen.B_Q;
-					case 2 : board[to[0]][to[1]] = Chessmen.B_Kn;
-					case 3 : board[to[0]][to[1]] = Chessmen.B_R;
-					case 4 : board[to[0]][to[1]] = Chessmen.B_B;
-					case 5 : board[to[0]][to[1]] = Chessmen.B_P;
+					case 1 : board[to[0]][to[1]] = pieces.Chessmen.B_Q;
+					case 2 : board[to[0]][to[1]] = pieces.Chessmen.B_Kn;
+					case 3 : board[to[0]][to[1]] = pieces.Chessmen.B_R;
+					case 4 : board[to[0]][to[1]] = pieces.Chessmen.B_B;
+					case 5 : board[to[0]][to[1]] = pieces.Chessmen.B_P;
 				}
 
 				}
