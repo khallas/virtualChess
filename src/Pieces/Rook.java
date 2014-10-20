@@ -1,8 +1,8 @@
 package Pieces;
 
-public class RookMoves extends AbstractPiece{
+public class Rook extends AbstractPiece{
 
-	public RookMoves(boolean isWhite) {
+	public Rook(boolean isWhite) {
 		super(isWhite);
 		// TODO Auto-generated constructor stub
 	}
@@ -20,14 +20,18 @@ public class RookMoves extends AbstractPiece{
 		
 	}
 	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		
+	public String draw() {
+		String unicode;
+		if(isWhite)
+			unicode = "\u2656";
+		else 
+			unicode = "\u265C";
+		return unicode;
 	}
 	@Override
 	public int relativeValue() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 6;
 	}
 
 }

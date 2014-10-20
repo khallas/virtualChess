@@ -19,8 +19,9 @@ public abstract class AbstractPiece {
 
 	/**
  	* Draws given piece into the console.
+	 * @return 
 	*/
-	public abstract void draw();
+	public abstract String draw();
 	
 	/**
 	* Checks whether a given move is valid. Returns true if valid, false otherwise .

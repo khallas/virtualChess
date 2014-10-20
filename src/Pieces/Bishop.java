@@ -1,16 +1,21 @@
 package Pieces;
 
-public class BishopMoves extends AbstractPiece{
+public class Bishop extends AbstractPiece{
 
-	public BishopMoves(boolean isWhite) {
+	//constructor
+	public Bishop(boolean isWhite) {
 		super(isWhite);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		
+	public String draw() {
+		String unicode;
+		if(isWhite) 
+			unicode = "\u2657"; 
+		else
+			unicode = "\u265D";
+		return unicode;	
 	}
 
 	@Override
@@ -27,7 +32,7 @@ public class BishopMoves extends AbstractPiece{
 	@Override
 	public int relativeValue() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 3;
 	}
 	
 
