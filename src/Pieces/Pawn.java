@@ -9,7 +9,6 @@ public class Pawn extends AbstractPiece{
 
 	@Override
 	public String draw() {
-		// TODO Auto-generated method stub
 		String unicode;
 		if(isWhite)
 			unicode = "\u2659";
@@ -61,7 +60,6 @@ public class Pawn extends AbstractPiece{
 
 	@Override
 	public int relativeValue() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 	

@@ -4,12 +4,10 @@ public class Knight extends AbstractPiece{
 
 	public Knight(boolean isWhite) {
 		super(isWhite);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String draw() {
-		// TODO Auto-generated method stub
 		String unicode;
 		if(isWhite)
 			unicode = "\u2658";
@@ -32,7 +30,6 @@ public class Knight extends AbstractPiece{
 
 	@Override
 	public int relativeValue() {
-		// TODO Auto-generated method stub
 		return 3;
 	}
 	
